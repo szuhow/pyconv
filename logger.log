@@ -1173,3 +1173,153 @@
 2023-04-27 17:20:34,596 [INFO] Oiiotool load complete
 2023-04-27 17:20:34,597 [INFO] Found conversion path in config file.
 2023-04-27 17:20:34,701 [INFO] Not found file with given params
+2023-04-27 17:36:20,790 [INFO] Found config file
+2023-04-27 17:36:20,959 [INFO] Oiiotool load complete
+2023-04-27 17:36:20,959 [INFO] Found conversion path in config file.
+2023-04-27 17:38:21,863 [INFO] Found config file
+2023-04-27 17:38:22,031 [INFO] Oiiotool load complete
+2023-04-27 17:38:22,032 [INFO] Found conversion path in config file.
+2023-04-27 17:39:54,395 [INFO] Found config file
+2023-04-27 17:39:54,499 [INFO] Oiiotool load complete
+2023-04-27 17:39:54,500 [INFO] Found conversion path in config file.
+2023-04-27 17:41:40,104 [INFO] Found config file
+2023-04-27 17:41:40,212 [INFO] Oiiotool load complete
+2023-04-27 17:41:40,213 [INFO] Found conversion path in config file.
+2023-04-27 17:41:40,314 [INFO] Not found file with given params
+2023-04-27 17:41:58,445 [INFO] Found config file
+2023-04-27 17:41:58,535 [INFO] Oiiotool load complete
+2023-04-27 17:41:58,536 [INFO] Found conversion path in config file.
+2023-04-27 17:41:58,637 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given colorspace srgb and depth uint8
+2023-04-27 17:42:06,581 [INFO] Found config file
+2023-04-27 17:42:06,637 [INFO] Oiiotool load complete
+2023-04-27 17:42:06,637 [INFO] Found conversion path in config file.
+2023-04-27 17:42:25,738 [INFO] Found config file
+2023-04-27 17:42:25,846 [INFO] Oiiotool load complete
+2023-04-27 17:42:25,847 [INFO] Found conversion path in config file.
+2023-04-27 17:42:25,943 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given colorspace srgb and depth uint8
+2023-04-27 17:42:34,704 [INFO] Found config file
+2023-04-27 17:42:34,758 [INFO] Oiiotool load complete
+2023-04-27 17:42:34,758 [INFO] Found conversion path in config file.
+2023-04-27 17:42:34,846 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given colorspace srgb and depth uint8
+2023-04-27 17:42:48,193 [INFO] Found config file
+2023-04-27 17:42:48,284 [INFO] Oiiotool load complete
+2023-04-27 17:42:48,284 [INFO] Found conversion path in config file.
+2023-04-27 17:42:48,398 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given colorspace srgb and depth uint8
+2023-04-27 17:55:18,531 [INFO] Found config file
+2023-04-27 17:55:18,696 [INFO] Oiiotool load complete
+2023-04-27 17:55:18,697 [INFO] Found conversion path in config file.
+2023-04-27 17:55:18,738 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif
+2023-04-27 17:55:18,768 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx
+2023-04-27 17:55:18,800 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8
+2023-04-27 17:58:47,981 [INFO] Found config file
+2023-04-27 17:58:48,147 [INFO] Oiiotool load complete
+2023-04-27 17:58:48,148 [INFO] Found conversion path in config file.
+2023-04-27 17:58:48,189 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif
+2023-04-27 17:58:48,219 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx
+2023-04-27 17:58:48,251 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8
+2023-04-27 17:59:16,955 [INFO] Found config file
+2023-04-27 17:59:17,054 [INFO] Oiiotool load complete
+2023-04-27 17:59:17,054 [INFO] Found conversion path in config file.
+2023-04-27 17:59:17,090 [INFO] srgb
+2023-04-27 17:59:17,090 [INFO] acescg
+2023-04-27 17:59:17,090 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif
+2023-04-27 17:59:17,119 [INFO] srgb
+2023-04-27 17:59:17,119 [INFO] acescg
+2023-04-27 17:59:17,120 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx
+2023-04-27 17:59:17,149 [INFO] srgb
+2023-04-27 17:59:17,150 [INFO] acescg
+2023-04-27 17:59:17,150 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8
+2023-04-27 18:00:26,896 [INFO] Found config file
+2023-04-27 18:00:26,997 [INFO] Oiiotool load complete
+2023-04-27 18:00:26,998 [INFO] Found conversion path in config file.
+2023-04-27 18:00:27,033 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:00:27,063 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:00:27,094 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with                             given depth uint8 and converting from srgb to acescg
+2023-04-27 18:00:37,640 [INFO] Found config file
+2023-04-27 18:00:37,693 [INFO] Oiiotool load complete
+2023-04-27 18:00:37,694 [INFO] Found conversion path in config file.
+2023-04-27 18:00:37,723 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:00:37,751 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:00:37,781 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:01:31,519 [INFO] Found config file
+2023-04-27 18:01:31,675 [INFO] Oiiotool load complete
+2023-04-27 18:01:31,676 [INFO] Found conversion path in config file.
+2023-04-27 18:02:24,377 [INFO] Found config file
+2023-04-27 18:02:24,484 [INFO] Oiiotool load complete
+2023-04-27 18:02:24,485 [INFO] Found conversion path in config file.
+2023-04-27 18:02:24,519 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:02:24,549 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:02:24,580 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:02:37,579 [INFO] Found config file
+2023-04-27 18:02:37,677 [INFO] Oiiotool load complete
+2023-04-27 18:02:37,677 [INFO] Found conversion path in config file.
+2023-04-27 18:02:37,718 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:02:37,747 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:02:37,779 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:03:08,583 [INFO] Found config file
+2023-04-27 18:03:08,690 [INFO] Oiiotool load complete
+2023-04-27 18:03:08,690 [INFO] Found conversion path in config file.
+2023-04-27 18:03:08,729 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:03:08,758 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:03:08,789 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from linear to srgb
+2023-04-27 18:03:27,762 [INFO] Found config file
+2023-04-27 18:03:27,865 [INFO] Oiiotool load complete
+2023-04-27 18:03:27,866 [INFO] Found conversion path in config file.
+2023-04-27 18:03:27,901 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:03:27,931 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:03:27,961 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:04:33,446 [INFO] Found config file
+2023-04-27 18:04:33,554 [INFO] Oiiotool load complete
+2023-04-27 18:04:33,555 [INFO] Found conversion path in config file.
+2023-04-27 18:06:10,880 [INFO] Found config file
+2023-04-27 18:06:10,977 [INFO] Oiiotool load complete
+2023-04-27 18:06:10,978 [INFO] Found conversion path in config file.
+2023-04-27 18:06:11,017 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:06:11,047 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:06:11,081 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:06:39,764 [INFO] Found config file
+2023-04-27 18:06:39,858 [INFO] Oiiotool load complete
+2023-04-27 18:06:39,858 [INFO] Found conversion path in config file.
+2023-04-27 18:06:39,901 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:06:39,931 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:07:17,444 [INFO] Found config file
+2023-04-27 18:07:17,601 [INFO] Oiiotool load complete
+2023-04-27 18:07:17,602 [INFO] Found conversion path in config file.
+2023-04-27 18:07:17,635 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:07:17,663 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:07:43,900 [INFO] Found config file
+2023-04-27 18:07:44,068 [INFO] Oiiotool load complete
+2023-04-27 18:07:44,069 [INFO] Found conversion path in config file.
+2023-04-27 18:07:44,108 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:07:44,139 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:07:44,169 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to l
+2023-04-27 18:07:58,671 [INFO] Found config file
+2023-04-27 18:07:58,768 [INFO] Oiiotool load complete
+2023-04-27 18:07:58,769 [INFO] Found conversion path in config file.
+2023-04-27 18:07:58,810 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:07:58,841 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:07:58,873 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to linear
+2023-04-27 18:08:10,206 [INFO] Found config file
+2023-04-27 18:08:10,307 [INFO] Oiiotool load complete
+2023-04-27 18:08:10,307 [INFO] Found conversion path in config file.
+2023-04-27 18:08:10,345 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:08:10,376 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:08:10,409 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to linear
+2023-04-27 18:08:19,993 [INFO] Found config file
+2023-04-27 18:08:20,044 [INFO] Oiiotool load complete
+2023-04-27 18:08:20,045 [INFO] Found conversion path in config file.
+2023-04-27 18:08:20,074 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/checker.tif and converting from srgb to acescg
+2023-04-27 18:08:20,104 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:08:20,134 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:10:59,228 [INFO] Found config file
+2023-04-27 18:10:59,373 [INFO] Oiiotool load complete
+2023-04-27 18:10:59,373 [INFO] Found conversion path in config file.
+2023-04-27 18:10:59,404 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/file_example_TIFF_5MB.tiff and converting from srgb to acescg
+2023-04-27 18:10:59,433 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:10:59,464 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:11:13,194 [INFO] Found config file
+2023-04-27 18:11:13,291 [INFO] Oiiotool load complete
+2023-04-27 18:11:13,291 [INFO] Found conversion path in config file.
+2023-04-27 18:11:13,331 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/file_example_TIFF_5MB.tiff with given depth uint8 and converting from srgb to acescg
+2023-04-27 18:11:13,361 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/R.dpx and converting from srgb to acescg
+2023-04-27 18:11:13,392 [INFO] Found file: /Users/rafalszulinski/PycharmProjects/PyConv/samples/00000124.jpeg with given depth uint8 and converting from srgb to acescg

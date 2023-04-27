@@ -1,5 +1,5 @@
 # ignore all logs
-*.log
+logger.log
 samples
 .idea
 *DS_Store

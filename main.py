@@ -108,8 +108,11 @@ def read_config_file(file_path):
             return data, o
 
 
-def tokenize():
-    pass
+def tokenize(data):
+    if data["tokenize"]["with"]:
+        return True
+    else:
+        return False
 
 
 def search_files(dir_path, extension):
@@ -122,14 +125,18 @@ def get_colorspace():
     pass
 
 
-def convert(conv, path, o):
+def convert(conv, path, o, data):
+    out_ext = list()
+    out_params = dict()
     try:
         in_colorspace = conv["input"]["colorspace"][0].lower().strip()
     except KeyError:
         in_colorspace = None
-    out_ext = list()
-    out_params = dict()
-    cs = ["Color space:", "color_space:", "ColorSpace:"]
+
+    try:
+        out_colorspace = conv["output"]["colorspace"][0].lower().strip()
+    except KeyError:
+        out_colorspace = None
     for output_extension in conv["output"]["ext"]:
         out_ext.append(output_extension.split('/')[0])
         if len(output_extension.split('/')) > 1:
@@ -140,6 +147,14 @@ def convert(conv, path, o):
         if filename:
             output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
             result = output_info.decode("ascii", errors="ignore")
+            if tokenize(data):
+                if data["tokenize"]["with"][0] in filename:
+                    inc = data["tokenize"]["action"]["input"]["colorspace"]
+                    outc = data["tokenize"]["action"]["output"]["colorspace"]
+                    if inc:
+                        in_colorspace = inc[0]
+                    if outc:
+                        out_colorspace = outc[0]
 
             if len(in_ext.split('/')) > 1:
                 if in_ext.split('/')[1] in ("scanline", "tiled"):
@@ -148,50 +163,29 @@ def convert(conv, path, o):
                     in_param = None
 
             try:
-                file_colorspace = None
-                for line in result.splitlines():
-                    if any(x in line for x in cs):
-                        file_colorspace = line.split(":")[2].replace('"', '').lower().strip()
-
-                if in_colorspace is not None:
-                    if in_colorspace == file_colorspace:
-                        if in_ext.split('/')[0] in result.splitlines()[0]:
-                            if len(in_ext.split('/')) > 1:
-                                if bit(in_ext.split('/')[1]) not in result.splitlines()[0]:
-                                    logging.info(f"Not found file with given params")
-                                    return
-                                else:
-                                    logging.info(f"Found file: {filename} with given colorspace {file_colorspace} "
-                                                 f"and depth {bit(in_ext.split('/')[1])}")
-                            else:
-                                logging.info(f"Found file: {filename} with given colorspace {file_colorspace}")
-                else:
-
+                if in_ext.split('/')[0] in result.splitlines()[0]:
                     if len(in_ext.split('/')) > 1:
-                        if bit(in_ext.split('/')[1]) not in result:
+                        if bit(in_ext.split('/')[1]) not in result.splitlines()[0]:
                             logging.info(f"Not found file with given params")
                             return
-
-                        if in_ext.split('/')[0] in result:
-                            logging.info(f"Found file: {filename}")
+                        else:
+                            logging.info(f"Found file: {filename} with given depth {bit(in_ext.split('/')[1])} and converting from {in_colorspace} to {out_colorspace}")
                     else:
-                        if in_ext.split('/')[0] in result.splitlines()[0]:
-                            logging.info(f"Found file: {filename}")
-
+                        logging.info(f"Found file: {filename} and converting from {in_colorspace} to {out_colorspace}")
 
             except KeyError:
                 logging.error("Not found depth value")
 
 
-def conversion(d: dict, action: str, path, o):
+def conversion(data: dict, action: str, path, o):
     # tokenize(d)
     if not check_path(path):
         logging.warning("Missing path in config file. Conversion in current directory.")
         path = os.getcwd()
     else:
         logging.info('Found conversion path in config file.')
-    for (k, v) in d[action].items():
-        convert(v, path, o)
+    for (k, v) in data[action].items():
+        convert(v, path, o, data)
 
 
 def main(argv):
