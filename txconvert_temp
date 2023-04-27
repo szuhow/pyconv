@@ -6,16 +6,20 @@ conversions:
     1:
         input:
             ext:
-                - "tif"
-                - "dpx"
-                - "jpeg/16"
-            colorspace:
-                - "srgb"
+                - "exr"
+            colorspace: "linear"
         output:
             ext:
                 - "exr/tiled"
-            colorspace:
-                - "acescg"
+            colorspace: "acescg"
+    2:
+        input:
+            ext:
+                - "exr/scanline"
+                - "tif/32"
+        output:
+            ext:
+                - "exr/tiled"
 
 proxy:
     in:

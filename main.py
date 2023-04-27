@@ -113,13 +113,8 @@ def tokenize():
 
 
 def search_files(dir_path, extension):
-    # for root, dirs, files in os.walk(dir_path):
-    #     for file in files:
-    #         if file.endswith(extension):
-    #             return file
-    #             # print(os.path.join(root, file))
     for filename in glob.iglob(dir_path + '/*' + extension, recursive=True):
-        if os.path.isfile(filename):  # filter dirs
+        if os.path.isfile(filename):
             return filename
 
 
@@ -128,22 +123,64 @@ def get_colorspace():
 
 
 def convert(conv, path, o):
-    # conv = list()
-    inputs = list()
-    outputs = list()
-    if conv["input"]["colorspace"]:
-        pas
-    for ext in conv["input"]["ext"]:
-        filename = search_files(path, "." + ext.split('/')[0])
+    try:
+        in_colorspace = conv["input"]["colorspace"][0].lower().strip()
+    except KeyError:
+        in_colorspace = None
+    out_ext = list()
+    out_params = dict()
+    cs = ["Color space:", "color_space:", "ColorSpace:"]
+    for output_extension in conv["output"]["ext"]:
+        out_ext.append(output_extension.split('/')[0])
+        if len(output_extension.split('/')) > 1:
+            out_params[output_extension.split('/')[0]] = output_extension.split('/')[1]
+
+    for in_ext in conv["input"]["ext"]:
+        filename = search_files(path, "." + in_ext.split('/')[0])
         if filename:
-            output = subprocess.check_output([o.p + "/iinfo", filename])
-            result = output.decode("ascii", errors="ignore")
-            if ext.split('/')[1]:
-                try:
-                    if bit(ext.split('/')[1]) in result:
-                        print("found" + filename)
-                except KeyError:
-                    logging.error("Not found depth value")
+            output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
+            result = output_info.decode("ascii", errors="ignore")
+
+            if len(in_ext.split('/')) > 1:
+                if in_ext.split('/')[1] in ("scanline", "tiled"):
+                    in_params = in_ext.split('/')[1]
+                else:
+                    in_param = None
+
+            try:
+                file_colorspace = None
+                for line in result.splitlines():
+                    if any(x in line for x in cs):
+                        file_colorspace = line.split(":")[2].replace('"', '').lower().strip()
+
+                if in_colorspace is not None:
+                    if in_colorspace == file_colorspace:
+                        if in_ext.split('/')[0] in result.splitlines()[0]:
+                            if len(in_ext.split('/')) > 1:
+                                if bit(in_ext.split('/')[1]) not in result.splitlines()[0]:
+                                    logging.info(f"Not found file with given params")
+                                    return
+                                else:
+                                    logging.info(f"Found file: {filename} with given colorspace {file_colorspace} "
+                                                 f"and depth {bit(in_ext.split('/')[1])}")
+                            else:
+                                logging.info(f"Found file: {filename} with given colorspace {file_colorspace}")
+                else:
+
+                    if len(in_ext.split('/')) > 1:
+                        if bit(in_ext.split('/')[1]) not in result:
+                            logging.info(f"Not found file with given params")
+                            return
+
+                        if in_ext.split('/')[0] in result:
+                            logging.info(f"Found file: {filename}")
+                    else:
+                        if in_ext.split('/')[0] in result.splitlines()[0]:
+                            logging.info(f"Found file: {filename}")
+
+
+            except KeyError:
+                logging.error("Not found depth value")
 
 
 def conversion(d: dict, action: str, path, o):
@@ -155,25 +192,6 @@ def conversion(d: dict, action: str, path, o):
         logging.info('Found conversion path in config file.')
     for (k, v) in d[action].items():
         convert(v, path, o)
-
-    # for inform in inputs:
-    #     print(inform)
-
-        # in_formats = inputs["format"]
-        # in_colorspace = inputs["colorspace"]
-        #
-        # out_formats = outputs["format"]
-        # out_colorspace = outputs["colorspace"]``
-
-    # print(conv_parameters)
-
-    # print(a for a in d["conversions"])
-    # print(sum([len(x["conversion"]) for x in d["actions"]]))
-    # for k in d:
-    #     for a in d[action][num_actions]:
-    #         print(a)
-        # inputs.append(a['input'])
-    # print(inputs)
 
 
 def main(argv):
