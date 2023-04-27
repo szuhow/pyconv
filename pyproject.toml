@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pyconv"
+version = "0.1.0"
+description = ""
+authors = ["Rafał Szuliński <rafal.szulinski@ives-system.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyyaml="^3.10"
+opencolorio="^2.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
