@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.9"
 pyyaml="^3.10"
 opencolorio="^2.2.1"
+black = "^23.3.0"
 
 
 [build-system]
