@@ -115,6 +115,15 @@ def tokenize(data):
         return False
 
 
+def filext(a: str):
+    out = a.split('.')
+    return out[1]
+
+def recursive_glob(path, ext):
+    return [os.path.join(looproot, filename)
+            for looproot, _, filenames in os.walk(path)
+            for filename in filenames if filename.endswith(ext)]
+
 def search_files(dir_path, extension):
     for filename in glob.iglob(dir_path + '/*' + extension, recursive=True):
         if os.path.isfile(filename):
@@ -143,38 +152,53 @@ def convert(conv, path, o, data):
             out_params[output_extension.split('/')[0]] = output_extension.split('/')[1]
 
     for in_ext in conv["input"]["ext"]:
-        filename = search_files(path, "." + in_ext.split('/')[0])
-        if filename:
-            output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
-            result = output_info.decode("ascii", errors="ignore")
-            if tokenize(data):
-                if data["tokenize"]["with"][0] in filename:
-                    inc = data["tokenize"]["action"]["input"]["colorspace"]
-                    outc = data["tokenize"]["action"]["output"]["colorspace"]
-                    if inc:
-                        in_colorspace = inc[0]
-                    if outc:
-                        out_colorspace = outc[0]
+        file = recursive_glob(path, "." + in_ext.split('/')[0])
+        # logging.info(cfiles)
+        # filename = search_files(path, "." + in_ext.split('/')[0])
+        if file:
+            for filename in file:
+                output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
+                result = output_info.decode("ascii", errors="ignore")
 
-            if len(in_ext.split('/')) > 1:
-                if in_ext.split('/')[1] in ("scanline", "tiled"):
-                    in_params = in_ext.split('/')[1]
-                else:
-                    in_param = None
+                if tokenize(data):
+                    if data["tokenize"]["with"][0] in filename:
+                        inc = data["tokenize"]["action"]["input"]["colorspace"]
+                        outc = data["tokenize"]["action"]["output"]["colorspace"]
+                        if inc:
+                            in_colorspace = inc[0]
+                        if outc:
+                            out_colorspace = outc[0]
 
-            try:
-                if in_ext.split('/')[0] in result.splitlines()[0]:
-                    if len(in_ext.split('/')) > 1:
-                        if bit(in_ext.split('/')[1]) not in result.splitlines()[0]:
-                            logging.info(f"Not found file with given params")
-                            return
-                        else:
-                            logging.info(f"Found file: {filename} with given depth {bit(in_ext.split('/')[1])} and converting from {in_colorspace} to {out_colorspace}")
+                if len(in_ext.split('/')) > 1:
+                    if in_ext.split('/')[1] in ("scanline", "tiled"):
+                        in_params = in_ext.split('/')[1]
                     else:
-                        logging.info(f"Found file: {filename} and converting from {in_colorspace} to {out_colorspace}")
+                        in_param = None
 
-            except KeyError:
-                logging.error("Not found depth value")
+                try:
+                    # logging.warning(in_ext.split('/')[0])
+                    # logging.error(result.splitlines()[0])
+
+                    if in_ext.split('/')[0] in result.splitlines()[0]:
+                        if len(in_ext.split('/')) > 1:
+                            if bit(in_ext.split('/')[1]) not in result.splitlines()[0]:
+                                    # logging.info(f"Not found file with given params")
+                                    return
+                            else:
+                                subprocess.run(
+                                    [o.p + "/oiiotool", filename, "--colorconvert", in_colorspace, out_colorspace, "-o",
+                                     filename.replace("."+ filext(filename), '') + "_export_." + out_ext[0]])
+                                logging.info(f"Found file: {filename} with given depth {bit(in_ext.split('/')[1])} and converting from {in_colorspace} to {out_colorspace}")
+                        else:
+                            subprocess.run(
+                                [o.p + "/oiiotool", filename, "--colorconvert", in_colorspace, out_colorspace, "-o",
+                                 filename.replace("." + filext(filename), '') + "_export_." + out_ext[0]])
+
+                            logging.info(f"Found file: {filename} and converting from {in_colorspace} to {out_colorspace}")
+
+                except KeyError:
+                    pass
+                    # logging.error("Not found depth value")
 
 
 def conversion(data: dict, action: str, path, o):
