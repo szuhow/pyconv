@@ -277,7 +277,7 @@ def proxy(data: dict, action: str, path, o):
                         'x'.join(map(str, (x,y))),
                         "-o",
                         filename.replace("." + filext(filename), "")
-                        + "_export_."
+                        + "_proxy_."
                         + out_ext,
                     ]
                 )
