@@ -50,7 +50,7 @@ def validate_oiiotool(data):
     else:
         endpoint = "/oiiotool"
     path = ociocheck_path + endpoint
-    output = subprocess.check_output([path], shell=True, stderr=subprocess.PIPE)
+    output = subprocess.check_output([path], shell=True, stderr=subprocess.PIPE) #TODO check if it allows UNC path for network drive
     result = output.decode("ascii", errors="ignore")
     for line in result.splitlines():
         if line == "oiiotool -- simple image processing operations":
@@ -60,6 +60,7 @@ def validate_oiiotool(data):
 
 
 def logger_config():
+    #TODO add option flag for terminal/file logging
     log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
@@ -283,9 +284,6 @@ def proxy(data: dict, action: str, path, o):
                 )
 
 
-
-
-
 def conversion(data: dict, action: str, path, o):
     if not check_path(path):
         logging.warning("Missing path in config file. Conversion in current directory.")
@@ -300,7 +298,7 @@ def main(argv):
     logger_config()
     data, o = get_args(argv)
     path = get_conversion_path(data)
-    # conversion(data, "conversions", path, o)
+    conversion(data, "conversions", path, o)
     proxy(data, "proxy", path, o)
 
 
