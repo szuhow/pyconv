@@ -3,4 +3,6 @@
 # PyConv
 ## _Konwersja plików graficznych_
 
-PyConv to aplikacja to konwertowania plików graficznych przy użyciu narzędzia Oiiotool.
+PyConv to aplikacja do konwertowania plików graficznych przy użyciu narzędzia Oiiotool. Konfiguracja parametrów wejściowych i wjściowych odbywa się za pomocą pliku konfiguracyjnego w formacie yaml.
+
+# wip
