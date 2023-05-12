@@ -156,8 +156,10 @@ def convert(conv, path, o, data):
             out_params[output_extension.split("/")[0]] = output_extension.split("/")[1]
     for in_ext in conv["input"]["ext"]:
         file = recursive_glob(path, "." + in_ext.split("/")[0])
+
         if file:
             for filename in file:
+                # print(filename)
                 output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
                 result = output_info.decode("ascii", errors="ignore")
                 if tokenize(data):
@@ -177,38 +179,47 @@ def convert(conv, path, o, data):
                     if in_ext.split("/")[0] in result.splitlines()[0]:
                         if len(in_ext.split("/")) > 1:
                             if bit(in_ext.split("/")[1]) not in result.splitlines()[0]:
-                                print(bit(in_ext.split("/")[1]))
+                                # print(bit(in_ext.split("/")[1]))
                                 logging.info(f"Not found file with given params")
                                 return
                             else:
+                                    subprocess.run(
+                                        [
+                                            o.p + "/oiiotool",
+                                            filename,
+                                            "--colorconvert",
+                                            in_colorspace,
+                                            out_colorspace,
+                                            "-o",
+                                            filename.replace(str(filename.split("/")[-1]),
+                                                             "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                            + "."
+                                            + out_ext[0],
+                                        ]
+                                    )
+                                    subprocess.run(
+                                        [
+                                            "chmod",
+                                            "go-w",
+                                            filename.replace(str(filename.split("/")[-1]),
+                                                             "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                            + "."
+                                            + out_ext[0],
+                                        ]
+                                    )
+                                    logging.info(
+                                        f"Found file: {filename} with given depth {bit(in_ext.split('/')[1])} and converting from {in_colorspace} to {out_colorspace} as write-protected"
+                                    )
 
-                                subprocess.run(
-                                    [
-                                        o.p + "/oiiotool",
-                                        filename,
-                                        "--colorconvert",
-                                        in_colorspace,
-                                        out_colorspace,
-                                        "-o",
-                                        filename.replace("." + filext(filename), "")
-                                        + "_export_."
-                                        + out_ext[0],
-                                    ]
-                                )
-                                subprocess.run(
-                                    [
-                                        "chmod",
-                                        "go-w",
-                                        filename.replace("." + filext(filename), "")
-                                        + "_export_."
-                                        + out_ext[0],
-                                    ]
-                                )
-                                logging.info(
-                                    f"Found file: {filename} with given depth {bit(in_ext.split('/')[1])} and converting from {in_colorspace} to {out_colorspace} as write-protected"
-                                )
                         else:
+                            print(filename.replace(str(filename.split("/")[-1]), "export_" + str(filename.split("/")[-1])))
 
+                            # filename.replace("." + filext(filename), ""))
+                            # subprocess.run(
+                            #     [o.p + "/oiiotool",
+                            #      "--hash",
+                            #      filename,
+                            #      ])
                             subprocess.run(
                                 [
                                     o.p + "/oiiotool",
@@ -217,17 +228,19 @@ def convert(conv, path, o, data):
                                     in_colorspace,
                                     out_colorspace,
                                     "-o",
-                                    filename.replace("." + filext(filename), "")
-                                    + "_export_."
+                                    filename.replace(str(filename.split("/")[-1]), "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                    + "."
                                     + out_ext[0],
                                 ]
                             )
+
                             subprocess.run(
                                 [
                                     "chmod",
                                     "go-w",
-                                    filename.replace("." + filext(filename), "")
-                                    + "_export_."
+                                    filename.replace(str(filename.split("/")[-1]),
+                                                     "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                    + "."
                                     + out_ext[0],
                                 ]
                             )
@@ -238,6 +251,7 @@ def convert(conv, path, o, data):
                 except KeyError:
                     pass
                     # logging.error("Not found depth value")
+                # file.remove(filename)
 
 
 def safeget(d, *keys):
@@ -292,6 +306,7 @@ def proxy(data: dict, action: str, path, o):
                 )
 
 
+
 def conversion(data: dict, action: str, path, o):
     if path == "pwd":
         logging.warning("Missing path in config file. Conversion in current directory.")
@@ -307,8 +322,8 @@ def main(argv):
     try:
         data, o = get_args(argv)
         path = get_conversion_path(data)
-        proxy(data, "proxy", path, o)
-        # conversion(data, "conversions", path, o)
+        # proxy(data, "proxy", path, o)
+        conversion(data, "conversions", path, o)
 
     except TypeError:
         #pass silently
