@@ -35,8 +35,10 @@ def check_path(file_path):
 def get_conversion_path(data):
     try:
         path = data["img"]["path"]
+        if not check_path(path):
+            logging.error("Invalid path for source")
     except KeyError:
-        path = None
+        path = "pwd"
     return path
 
 
@@ -88,6 +90,8 @@ def get_args(argv):
     if options.path:
         data, o = read_config_file(options.path)
         return data, o
+
+
 
 
 def read_config_file(file_path):
@@ -173,7 +177,8 @@ def convert(conv, path, o, data):
                     if in_ext.split("/")[0] in result.splitlines()[0]:
                         if len(in_ext.split("/")) > 1:
                             if bit(in_ext.split("/")[1]) not in result.splitlines()[0]:
-                                # logging.info(f"Not found file with given params")
+                                print(bit(in_ext.split("/")[1]))
+                                logging.info(f"Not found file with given params")
                                 return
                             else:
 
@@ -255,21 +260,26 @@ def proxy(data: dict, action: str, path, o):
     except ValueError:
         logging.error("Size values must be integers")
         return
-    exts = ("jpg", "tiff", "tif", "dpx")
+    exts = ("jpg", "tiff", "tif", "dpx", "jpeg")
     file = recursive_glob(path, exts)
+    x = 0
+    y = 0
     if file:
         for filename in file:
+
             output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
             result = output_info.decode("ascii", errors="ignore")
             res = result.splitlines()[0].split(':')[1].split(',')[0].replace(" ", "").split('x')
             if any(int(num) > max_in_size for num in res):
-                x, y = 0
                 if int(res[0]) > max_in_size:
                     x = max_out_size
                     y = 0
                 elif int(res[1]) > max_in_size:
                     x = 0
                     y = max_out_size
+                proxy_path = filename.replace(str(filename.split("/")[-1]), "proxy/")
+                if not os.path.exists(proxy_path):
+                    os.mkdir(proxy_path)
                 subprocess.run(
                     [
                         o.p + "/oiiotool",
@@ -277,15 +287,13 @@ def proxy(data: dict, action: str, path, o):
                         "--resize",
                         'x'.join(map(str, (x,y))),
                         "-o",
-                        filename.replace("." + filext(filename), "")
-                        + "_proxy_."
-                        + out_ext,
+                        filename.replace(str(filename.split("/")[-1]), "proxy/" + str(filename.split("/")[-1])),
                     ]
                 )
 
 
 def conversion(data: dict, action: str, path, o):
-    if not check_path(path):
+    if path == "pwd":
         logging.warning("Missing path in config file. Conversion in current directory.")
         path = os.getcwd()
     else:
@@ -296,10 +304,15 @@ def conversion(data: dict, action: str, path, o):
 
 def main(argv):
     logger_config()
-    data, o = get_args(argv)
-    path = get_conversion_path(data)
-    conversion(data, "conversions", path, o)
-    proxy(data, "proxy", path, o)
+    try:
+        data, o = get_args(argv)
+        path = get_conversion_path(data)
+        proxy(data, "proxy", path, o)
+        # conversion(data, "conversions", path, o)
+
+    except TypeError:
+        #pass silently
+        pass
 
 
 if __name__ == "__main__":
