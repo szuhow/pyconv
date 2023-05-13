@@ -52,7 +52,9 @@ def validate_oiiotool(data):
     else:
         endpoint = "/oiiotool"
     path = ociocheck_path + endpoint
-    output = subprocess.check_output([path], shell=True, stderr=subprocess.PIPE) #TODO check if it allows UNC path for network drive
+    output = subprocess.check_output(
+        [path], shell=True, stderr=subprocess.PIPE
+    )  # TODO check if it allows UNC path for network drive
     result = output.decode("ascii", errors="ignore")
     for line in result.splitlines():
         if line == "oiiotool -- simple image processing operations":
@@ -62,7 +64,7 @@ def validate_oiiotool(data):
 
 
 def logger_config():
-    #TODO add option flag for terminal/file logging
+    # TODO add option flag for terminal/file logging
     log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
@@ -90,8 +92,6 @@ def get_args(argv):
     if options.path:
         data, o = read_config_file(options.path)
         return data, o
-
-
 
 
 def read_config_file(file_path):
@@ -179,10 +179,26 @@ def convert(conv, path, o, data):
                     if in_ext.split("/")[0] in result.splitlines()[0]:
                         if len(in_ext.split("/")) > 1:
                             if bit(in_ext.split("/")[1]) not in result.splitlines()[0]:
-                                # print(bit(in_ext.split("/")[1]))
                                 logging.info(f"Not found file with given params")
                                 return
                             else:
+                                read = (
+                                    filename.replace(
+                                        str(filename.split("/")[-1]),
+                                        "export_" + str(filename.split("/")[-1]),
+                                    ).split(".")[0]
+                                    + "."
+                                    + out_ext[0]
+                                )
+                                print("oik")
+                                if os.path.isfile(read):
+                                    output_hash = subprocess.check_output(
+                                        [
+                                            o.p + "/oiiotool",
+                                            "--hash",
+                                            read,
+                                        ]
+                                    )
                                     subprocess.run(
                                         [
                                             o.p + "/oiiotool",
@@ -191,8 +207,59 @@ def convert(conv, path, o, data):
                                             in_colorspace,
                                             out_colorspace,
                                             "-o",
-                                            filename.replace(str(filename.split("/")[-1]),
-                                                             "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                            filename.replace(
+                                                str(filename.split("/")[-1]),
+                                                "new_export_"
+                                                + str(filename.split("/")[-1]),
+                                            ).split(".")[0]
+                                            + "."
+                                            + out_ext[0],
+                                        ]
+                                    )
+                                    existing_hash_read = subprocess.check_output(
+                                        [
+                                            o.p + "/oiiotool",
+                                            "--hash",
+                                            filename.replace(
+                                                str(filename.split("/")[-1]),
+                                                "new_export_"
+                                                + str(filename.split("/")[-1]),
+                                            ).split(".")[0]
+                                            + "."
+                                            + out_ext[0],
+                                        ]
+                                    )
+                                    out = str(output_hash.strip()).split("SHA-1:")[1]
+                                    ex = str(existing_hash_read.strip()).split(
+                                        "SHA-1:"
+                                    )[1]
+                                    if out == ex:
+                                        os.remove(
+                                            filename.replace(
+                                                str(filename.split("/")[-1]),
+                                                "new_export_"
+                                                + str(filename.split("/")[-1]),
+                                            ).split(".")[0]
+                                            + "."
+                                            + out_ext[0]
+                                        )
+                                        print(
+                                            f"SHA-1 of file: {out} and {ex} matches. Deleting file."
+                                        )
+                                else:
+                                    subprocess.run(
+                                        [
+                                            o.p + "/oiiotool",
+                                            filename,
+                                            "--colorconvert",
+                                            in_colorspace,
+                                            out_colorspace,
+                                            "-o",
+                                            filename.replace(
+                                                str(filename.split("/")[-1]),
+                                                "export_"
+                                                + str(filename.split("/")[-1]),
+                                            ).split(".")[0]
                                             + "."
                                             + out_ext[0],
                                         ]
@@ -200,9 +267,12 @@ def convert(conv, path, o, data):
                                     subprocess.run(
                                         [
                                             "chmod",
-                                            "go-w",
-                                            filename.replace(str(filename.split("/")[-1]),
-                                                             "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                            "a-w",
+                                            filename.replace(
+                                                str(filename.split("/")[-1]),
+                                                "export_"
+                                                + str(filename.split("/")[-1]),
+                                            ).split(".")[0]
                                             + "."
                                             + out_ext[0],
                                         ]
@@ -212,34 +282,94 @@ def convert(conv, path, o, data):
                                     )
 
                         else:
-                            print(filename.replace(str(filename.split("/")[-1]), "export_" + str(filename.split("/")[-1])))
-
-                            # filename.replace("." + filext(filename), ""))
-                            # subprocess.run(
-                            #     [o.p + "/oiiotool",
-                            #      "--hash",
-                            #      filename,
-                            #      ])
-                            subprocess.run(
-                                [
-                                    o.p + "/oiiotool",
-                                    filename,
-                                    "--colorconvert",
-                                    in_colorspace,
-                                    out_colorspace,
-                                    "-o",
-                                    filename.replace(str(filename.split("/")[-1]), "export_" + str(filename.split("/")[-1])).split(".")[0]
-                                    + "."
-                                    + out_ext[0],
-                                ]
+                            read = (
+                                filename.replace(
+                                    str(filename.split("/")[-1]),
+                                    "export_" + str(filename.split("/")[-1]),
+                                ).split(".")[0]
+                                + "."
+                                + out_ext[0]
                             )
+                            if os.path.isfile(read):
+                                output_hash = subprocess.check_output(
+                                    [
+                                        o.p + "/oiiotool",
+                                        "--hash",
+                                        read,
+                                    ]
+                                )
+                                subprocess.run(
+                                    [
+                                        o.p + "/oiiotool",
+                                        filename,
+                                        "--colorconvert",
+                                        in_colorspace,
+                                        out_colorspace,
+                                        "-o",
+                                        filename.replace(
+                                            str(filename.split("/")[-1]),
+                                            "new_export_"
+                                            + str(filename.split("/")[-1]),
+                                        ).split(".")[0]
+                                        + "."
+                                        + out_ext[0],
+                                    ]
+                                )
+                                existing_hash_read = subprocess.check_output(
+                                    [
+                                        o.p + "/oiiotool",
+                                        "--hash",
+                                        filename.replace(
+                                            str(filename.split("/")[-1]),
+                                            "new_export_"
+                                            + str(filename.split("/")[-1]),
+                                        ).split(".")[0]
+                                        + "."
+                                        + out_ext[0],
+                                    ]
+                                )
+                                out = str(output_hash.strip()).split("SHA-1:")[1]
+                                ex = str(existing_hash_read.strip()).split("SHA-1:")[1]
+                                if out == ex:
+                                    os.remove(
+                                        filename.replace(
+                                            str(filename.split("/")[-1]),
+                                            "new_export_"
+                                            + str(filename.split("/")[-1]),
+                                        ).split(".")[0]
+                                        + "."
+                                        + out_ext[0]
+                                    )
+                                    print(
+                                        f"SHA-1 of file: {out} and {ex} matches. Deleting file."
+                                    )
+                            else:
+                                subprocess.run(
+                                    [
+                                        o.p + "/oiiotool",
+                                        filename,
+                                        "--colorconvert",
+                                        in_colorspace,
+                                        out_colorspace,
+                                        "-o",
+                                        filename.replace(
+                                            str(filename.split("/")[-1]),
+                                            "export_" + str(filename.split("/")[-1]),
+                                        ).split(".")[0]
+                                        + "."
+                                        + out_ext[0],
+                                    ]
+                                )
 
                             subprocess.run(
                                 [
+                                    "sudo",
                                     "chmod",
-                                    "go-w",
-                                    filename.replace(str(filename.split("/")[-1]),
-                                                     "export_" + str(filename.split("/")[-1])).split(".")[0]
+                                    "a-w",
+                                    filename.replace(
+                                        str(filename.split("/")[-1]),
+                                        "export_" + str(filename.split("/")[-1]),
+                                    ).split(".")[0]
                                     + "."
                                     + out_ext[0],
                                 ]
@@ -265,10 +395,14 @@ def safeget(d, *keys):
 
 def proxy(data: dict, action: str, path, o):
     try:
-        if safeget(data, 'proxy', 'in', 'max_size') and safeget(data, 'proxy', 'out', 'ext') and safeget(data, 'proxy', 'out', 'max_size'):
-            max_in_size = int(safeget(data, 'proxy', 'in', 'max_size'))
-            max_out_size = int(safeget(data, 'proxy', 'out', 'max_size'))
-            out_ext = safeget(data, 'proxy', 'out', 'ext')
+        if (
+            safeget(data, "proxy", "in", "max_size")
+            and safeget(data, "proxy", "out", "ext")
+            and safeget(data, "proxy", "out", "max_size")
+        ):
+            max_in_size = int(safeget(data, "proxy", "in", "max_size"))
+            max_out_size = int(safeget(data, "proxy", "out", "max_size"))
+            out_ext = safeget(data, "proxy", "out", "ext")
         else:
             return
     except ValueError:
@@ -280,10 +414,15 @@ def proxy(data: dict, action: str, path, o):
     y = 0
     if file:
         for filename in file:
-
             output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
             result = output_info.decode("ascii", errors="ignore")
-            res = result.splitlines()[0].split(':')[1].split(',')[0].replace(" ", "").split('x')
+            res = (
+                result.splitlines()[0]
+                .split(":")[1]
+                .split(",")[0]
+                .replace(" ", "")
+                .split("x")
+            )
             if any(int(num) > max_in_size for num in res):
                 if int(res[0]) > max_in_size:
                     x = max_out_size
@@ -299,12 +438,14 @@ def proxy(data: dict, action: str, path, o):
                         o.p + "/oiiotool",
                         filename,
                         "--resize",
-                        'x'.join(map(str, (x,y))),
+                        "x".join(map(str, (x, y))),
                         "-o",
-                        filename.replace(str(filename.split("/")[-1]), "proxy/" + str(filename.split("/")[-1])),
+                        filename.replace(
+                            str(filename.split("/")[-1]),
+                            "proxy/" + str(filename.split("/")[-1]),
+                        ),
                     ]
                 )
-
 
 
 def conversion(data: dict, action: str, path, o):
@@ -326,7 +467,7 @@ def main(argv):
         conversion(data, "conversions", path, o)
 
     except TypeError:
-        #pass silently
+        # pass silently
         pass
 
 

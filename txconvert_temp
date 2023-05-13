@@ -1,45 +1,43 @@
 oiiotool:
     path: "/Users/rafalszulinski/Desktop/CODING/IVES/oiio/build/bin"
 img:
-    path: "/Users/rafalszulinski/PycharmProjects/PyConv/samples"
+    path: "/Users/rafalszulinski/PycharmProjects/PyConv/samples/jpeg"
 conversions:
     1:
         input:
             ext:
-                - "exr"
-            colorspace: "linear"
+                - "jpeg"
+                - "tiff"
+                - "png"
+                - "dpx"
+            colorspace:
+                - "srgb"
         output:
             ext:
-                - "exr/tiled"
-            colorspace: "acescg"
+                - "exr"
+            colorspace:
+                - "acescg"
     2:
         input:
             ext:
-                - "exr/scanline"
-                - "tif/32"
+                - "exr"
+                - "tiff/32"
         output:
             ext:
                 - "exr/tiled"
 
 proxy:
     in:
-        size:
-            width:
-            height:
+        max_size: "100"
     out:
-        size:
-            width:
-            height:
+        ext: "jpg"
+        max_size: 64
 
 tokenize:
-    starts:
     with:
-    ends:
     action:
+        input:
+            colorspace:
+        output:
+            colorspace:
 
-
-
-
-
-
-logger_path:

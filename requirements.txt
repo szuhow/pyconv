@@ -1,2 +1,1 @@
 pyyaml==3.10
-opencolorio==2.2.1
