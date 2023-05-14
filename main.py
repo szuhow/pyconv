@@ -123,6 +123,7 @@ def filext(a: str):
 
 
 def recursive_glob(path, ext):
+    # todo exclude proxy files
     return [
         os.path.join(looproot, filename)
         for looproot, _, filenames in os.walk(path)
@@ -137,6 +138,12 @@ def recursive_glob_extless(path):
         for looproot, _, filenames in os.walk(path)
         for filename in filenames
     ]
+
+
+def execute_conversion(*args):
+    # wip -> change cmd for network drive
+    if args[-1]:
+        subprocess.run([*args[:-1]])
 
 
 def convert(conv, path, o, data):
@@ -156,12 +163,17 @@ def convert(conv, path, o, data):
             out_params[output_extension.split("/")[0]] = output_extension.split("/")[1]
     for in_ext in conv["input"]["ext"]:
         file = recursive_glob(path, "." + in_ext.split("/")[0])
-
         if file:
             for filename in file:
-                # print(filename)
-                output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
-                result = output_info.decode("ascii", errors="ignore")
+                if "proxy" in path:
+                    file.remove(path)
+                try:
+                    output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
+                    result = output_info.decode("ascii", errors="ignore")
+                except:
+                    logging.error(f"Could not read header of {filename}")
+                    return
+
                 if tokenize(data):
                     if data["tokenize"]["with"][0] in filename:
                         inc = data["tokenize"]["action"]["input"]["colorspace"]
@@ -178,6 +190,7 @@ def convert(conv, path, o, data):
                 try:
                     if in_ext.split("/")[0] in result.splitlines()[0]:
                         if len(in_ext.split("/")) > 1:
+                            print(in_ext.split("/"))
                             if bit(in_ext.split("/")[1]) not in result.splitlines()[0]:
                                 logging.info(f"Not found file with given params")
                                 return
@@ -190,7 +203,6 @@ def convert(conv, path, o, data):
                                     + "."
                                     + out_ext[0]
                                 )
-                                print("oik")
                                 if os.path.isfile(read):
                                     output_hash = subprocess.check_output(
                                         [
@@ -282,6 +294,8 @@ def convert(conv, path, o, data):
                                     )
 
                         else:
+                            # redundant, to refactor
+
                             read = (
                                 filename.replace(
                                     str(filename.split("/")[-1]),
@@ -414,38 +428,38 @@ def proxy(data: dict, action: str, path, o):
     y = 0
     if file:
         for filename in file:
-            output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
-            result = output_info.decode("ascii", errors="ignore")
-            res = (
-                result.splitlines()[0]
-                .split(":")[1]
-                .split(",")[0]
-                .replace(" ", "")
-                .split("x")
-            )
-            if any(int(num) > max_in_size for num in res):
-                if int(res[0]) > max_in_size:
-                    x = max_out_size
-                    y = 0
-                elif int(res[1]) > max_in_size:
-                    x = 0
-                    y = max_out_size
-                proxy_path = filename.replace(str(filename.split("/")[-1]), "proxy/")
-                if not os.path.exists(proxy_path):
-                    os.mkdir(proxy_path)
-                subprocess.run(
-                    [
-                        o.p + "/oiiotool",
-                        filename,
-                        "--resize",
-                        "x".join(map(str, (x, y))),
-                        "-o",
-                        filename.replace(
-                            str(filename.split("/")[-1]),
-                            "proxy/" + str(filename.split("/")[-1]),
-                        ),
-                    ]
+                output_info = subprocess.check_output([o.p + "/iinfo", filename, "-v"])
+                result = output_info.decode("ascii", errors="ignore")
+                res = (
+                    result.splitlines()[0]
+                    .split(":")[1]
+                    .split(",")[0]
+                    .replace(" ", "")
+                    .split("x")
                 )
+                if any(int(num) > max_in_size for num in res):
+                    if int(res[0]) > max_in_size:
+                        x = max_out_size
+                        y = 0
+                    elif int(res[1]) > max_in_size:
+                        x = 0
+                        y = max_out_size
+                    proxy_path = filename.replace(str(filename.split("/")[-1]), "proxy/")
+                    if not os.path.exists(proxy_path):
+                        os.mkdir(proxy_path)
+                    subprocess.run(
+                        [
+                            o.p + "/oiiotool",
+                            filename,
+                            "--resize",
+                            "x".join(map(str, (x, y))),
+                            "-o",
+                            filename.replace(
+                                str(filename.split("/")[-1]),
+                                "proxy/" + str(filename.split("/")[-1]),
+                            ),
+                        ]
+                    )
 
 
 def conversion(data: dict, action: str, path, o):
@@ -463,9 +477,8 @@ def main(argv):
     try:
         data, o = get_args(argv)
         path = get_conversion_path(data)
-        # proxy(data, "proxy", path, o)
+        proxy(data, "proxy", path, o)
         conversion(data, "conversions", path, o)
-
     except TypeError:
         # pass silently
         pass
